@@ -1,7 +1,46 @@
 
 
+
+# How does FerrenF develop his react applications?
+
+I run react servers on their own virtual machine using Oracle VM Virtualbox Manager.
+You can get that here: https://www.virtualbox.org/wiki/Downloads
+![img.png](img.png)
+
+Your virtual machine does not need to have a ton of memory or space, and you are free to choose from manu versions of unix.
+The above version of Ubuntu is [Ubuntu Server](https://ubuntu.com/download/server). It does not have a UI and is low on resource consumption.
+
+When you set up your virtual machine in Oracle, you'll want to do a few things to make your life easier. You don't want to actually CODE in there do you?
+
+
+![img_1.png](img_1.png)
+You'll need to set up shared folders so you can access your site directory from within the virtual operating system.
+The paths you choose are up to you as long as the repository is initialized in the right place with the right folder name.
+
+![img_2.png](img_2.png)
+Youll also need to set up port forwards so you can access your virtual machine's development server.
+
+
+Once your machine is set up with the appropriate shared directories and port forwards, you can then proceed to install the few
+dependencies needed to run this project: 
+
+[Node.JS](https://nodejs.org/en/download/package-manager)
+
+You'll probably run into more dependencies. It'll let you know.
+Once you get that installed, then you should pull from this repository.
+
 When cloning from git into an empty directory,
 before anything you will want to run npm-install in the root directory from a console. This does mean that the project will require some version of Node.JS/NPM installed in order to run.
+
+
+
+If you are using Node.JS with Windows, or are editing the site directory on the same machine the server runs on, you may
+not need WATCHPACK_POLLING=true in the <scripts> section of package.json. This is to make sure that react automatically rebuilds
+it's server when files change in an oracle VM shared folder. Otherwise, it will not detect the changes.
+
+
+
+
 
 # Getting Started with Create React App
 
