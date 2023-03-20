@@ -15,6 +15,7 @@ import GLUI_ViewMain from "./views/GLUI_ViewMain";
 import GLUI_ViewRegister from "./views/GLUI_ViewRegister";
 import GLUI_ViewConfirm from "./views/GLUI_ViewConfirm";
 import GLUI_ViewList from "./views/GLUI_ViewList";
+import GLUI_MainContainer from "./components/GLUI_MainContainer";
 
 //main socket, change port in future
 const socket = io('localhost:3001');
@@ -28,24 +29,17 @@ export default function GLApp(props) {
     return (
         <div className='GLAppMain'>
             <Routes>
-                <Route element={<Layout />}>
+                /*
+                    So here is where we enter the GLUI.
+                    GLUI_MainContainer is special in that it holds all other components for our app.
+                    We can change it's content to reflect changes in the browser URL.
+                */
+                <Route element={<GLUI_MainContainer />}>
                     <Route path="/" element={<GLUI_ViewMain />} />
                     <Route path="/login" element={<GLUI_ViewLogin />} />
                     <Route path="/register" element={<GLUI_ViewRegister />} />
                 </Route>
             </Routes>
-        </div>
-    );
-}
-
-function Layout(props){
-    return (
-        <div>
-            <p>
-                A test
-                <Link to="/">HomePage Link</Link>
-            </p>
-            <Outlet />
         </div>
     );
 }

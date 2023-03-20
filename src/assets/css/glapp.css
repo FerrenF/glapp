@@ -1,0 +1,31 @@
+
+:root {
+    --global-font-family: Verdana, sans-serif;
+    --global-font-size: 0.8rem;
+    --global-text-color: #222;
+    --global-primary-title-size: 2rem;
+
+    --color-primary: #145DA0;
+    --color-primary-light: #B1D4E0;
+    --color-primary-dark: #0C2D48;
+
+    --color-secondary-light: #88498f;
+    --color-secondary: #779fa1;
+    --color-secondary-dark: #779fa1;
+
+    --color-neutral-light: #9DB6CC;
+    --color-neutral-dark: #525B76;
+
+    --text-color-light: #222;
+    --text-color-dark: #FFF;
+
+    --color-success: #93E5AB;
+    --color-warning: #A47786;
+    --color-error: #533440;
+}
+
+.GLAppMain{
+    background-color: var(--color-primary-dark);
+    color: var(--text-color-dark);
+    text-align: center;
+}
