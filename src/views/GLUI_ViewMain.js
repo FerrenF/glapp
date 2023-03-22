@@ -9,9 +9,18 @@ import GLUI_ContentContainer from "../components/GLUI_ContentContainer";
 import GLUI_ListItem from "../components/GLUI_ListItem"
 import GLUI_Header from "../components/GLUIHeader";
 
+
+
+
+function GLUI_ListHeader() {
+    return (<GLUI_Header link={"farts"} menuClick={()=>{}} menuOver={()=>{}}></GLUI_Header>);
+}
 export default function GLUI_ViewMain(props) {
+
+
     return (
             <GLUI_MainContainer>
+                <GLUI_ListHeader/>
                <GLUI_ListContainer>
 
                </GLUI_ListContainer>
@@ -36,9 +45,6 @@ function GLUI_ListContainer(props){
                 pinned: false
             }
         ];
-    const topHalf = () => {
-        return (<GLUI_Header></GLUI_Header>);
-    }
 
     function bottomHalf(lists) {
         return (<div>
@@ -50,8 +56,6 @@ function GLUI_ListContainer(props){
     return(
 
         <GLUI_ContentContainer>
-            {topHalf()}
-
             <ListContext.Provider value={initialValue}>
                 {bottomHalf(initialValue)}
             </ListContext.Provider>
