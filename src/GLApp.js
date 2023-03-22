@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import io from 'socket.io-client';
 import {
     Routes,
@@ -17,6 +17,7 @@ import GLUI_ViewConfirm from "./views/GLUI_ViewConfirm";
 import GLUI_ViewList from "./views/GLUI_ViewList";
 import GLUI_MainContainer from "./components/GLUI_MainContainer";
 
+
 //main socket, change port in future
 const socket = io('localhost:3001');
 
@@ -26,6 +27,7 @@ export default function GLApp(props) {
     const [lastMessage, setLastMessage] = useState(null);
     const view = props.view;
 
+
     return (
         <div className='GLAppMain'>
             <Routes>
@@ -34,11 +36,11 @@ export default function GLApp(props) {
                     GLUI_MainContainer is special in that it holds all other components for our app.
                     We can change it's content to reflect changes in the browser URL.
                 */
-                <Route element={<GLUI_MainContainer />}>
+
                     <Route path="/" element={<GLUI_ViewMain />} />
                     <Route path="/login" element={<GLUI_ViewLogin />} />
                     <Route path="/register" element={<GLUI_ViewRegister />} />
-                </Route>
+
             </Routes>
         </div>
     );
