@@ -29,3 +29,17 @@
     color: var(--text-color-dark);
     text-align: center;
 }
+
+/*
+    This neat trick eliminates a sub-grid.
+ */
+
+.GLUI_ListContainer {
+    max-width: 75%;
+}
+.GLUI_ListItem {
+    display:block;
+}
+.GLUI_MainContainer {
+    height:100vh;
+}

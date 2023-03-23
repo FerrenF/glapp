@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 
 const GLUI_Header = ({link, menuClick, menuOver}) => {
     return (
+
         <Container className = "GLUI_Header">
             <Row className = "GLUIHeaderTop">
                 <Col className={"GLUI_HeaderButtonContainer"} xs={4} md={2}>
