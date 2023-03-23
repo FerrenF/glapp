@@ -16,12 +16,13 @@ import {GLCommonIcon} from "../assets/common.js"
 //
 // Main View Container - GLUI_ViewMain
 // All associated view specific components:
-// GLUI_ListHeader
+// GLUI_ListHeader                                          Resonsible for opening the sidebar and navigating back to the main menu from anywhere.
 //      Children
 // GLUI_ListContainer
-//      GLUI_ListItem <- Inline definition
+//      GLUI_ListItem <- Inline definition                  Responsible for containing the components of each list displayed on the list view page.
+//      GLUI_ListItemAdd <- Inline definition               Responsible for containing a single component which begins the process of adding an item to the list.
 //      Children
-// GLUI_ListSidebar
+// GLUI_ListSidebar                                         Todo: Implement the sidebar.
 //      Children
 
 
@@ -138,7 +139,7 @@ function GLUI_ListContainer(props){
     // An inline component, that is, this is a valid react component defined within a component.
     const GLUI_ListItem = ({label, icon}) => {
         return (
-            <Col md={3} className={"GLUI_ListItem row"}>
+            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
 
                     <GLUI_ImgButton image={icon} onClick={()=>{
 
@@ -146,6 +147,21 @@ function GLUI_ListContainer(props){
                     }}/>
 
                     {label}
+
+            </Col>
+        );
+    }
+
+    const GLUI_ListItemAdd = ({label, icon}) => {
+        return (
+            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
+
+                <GLUI_ImgButton image={icon} onClick={()=>{
+
+
+                }}/>
+
+                {label}
 
             </Col>
         );

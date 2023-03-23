@@ -18,16 +18,33 @@ import GLUI_ViewList from "./views/GLUI_ViewList";
 import GLUI_MainContainer from "./components/GLUI_MainContainer";
 
 
+// IN THIS FILE:
+//
+// Main App Container
+// GLApp - "GLAppMain"
+//
+//
+// Application URL routing
+//
+//
+// Todo: Seperate routes from this file.
+//
+//
+//
+
+
+
+
 //main socket, change port in future
 const socket = io('localhost:3001');
 
 
 export default function GLApp(props) {
-    const [isConnected, setIsConnected] = useState(socket.connected);
-    const [lastMessage, setLastMessage] = useState(null);
+
+    // Todo: server connectivity
+    // const [isConnected, setIsConnected] = useState(socket.connected);
+    // const [lastMessage, setLastMessage] = useState(null);
     const view = props.view;
-
-
     return (
         <div className='GLAppMain'>
             <Routes>
