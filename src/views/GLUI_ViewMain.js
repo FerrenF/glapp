@@ -1,15 +1,18 @@
 
-import {Col, Row, Container} from 'react-bootstrap';
+import {Col, Row, Container, InputGroup} from 'react-bootstrap';
 import GLUI_MainContainer from '../components/GLUI_MainContainer'
 //import GLUI_ListContainer from "../components/GLUI_ListContainer";
 import React, {useContext, useState} from "react";
+
 import GLListProvider, {ListContext} from "../services/GLListContext";
+
 import GLUI_ImgButton from "../components/GLUI_ImgButton";
 import GLUI_ContentContainer from "../components/GLUI_ContentContainer";
 import GLUI_Header from "../components/GLUIHeader";
 
 import {GLCommonIcon} from "../assets/common.js"
 import GLUI_Input from "../components/GLUI_Input";
+import Image from "react-bootstrap/Image";
 
 
 
@@ -145,22 +148,27 @@ function GLUI_ListContainer(props){
         ];
 
 
+    //This component adds the enlarge on mouse over animation.
+    const GLUI_ListItemImgBtn = ({icon, onClick}) => {
+        const [enlarged, setEnlarged] = useState(false);
+        return(<Image style={ {scale: (enlarged ? "1.25" : "1")}} fluid={true} className="rounded GLUI_ImgButton " src={icon}
+                      alt="Description" onClick={onClick} onMouseOver={()=>setEnlarged(true)} onMouseOut={()=>setEnlarged(false)}/>
+    );
+    }
     // An inline component, that is, this is a valid react component defined within a component.
     const GLUI_ListItem = ({label, icon}) => {
+        const [enlarged, setEnlarged] = useState(false);
         return (
             <Col md={3} xs={6} className={"GLUI_ListItem row"}>
-
-                    <GLUI_ImgButton image={icon} onClick={()=>{
-
-
-                    }}/>
-
+                <GLUI_ListItemImgBtn icon={icon}/>
                     {label}
 
             </Col>
         );
     }
 
+    //Todo: add this to the figma
+    //This component is the item in the list the user must click to add more items.
     const GLUI_ListItemAdd = () => {
 
         // After moving this statement here, my performance improved vastly. can you imagine why?
@@ -168,11 +176,11 @@ function GLUI_ListContainer(props){
         const [addStatus, setAddStatus] = useState(0);
 
 
-        if(addStatus == false){
+        if(addStatus == 0){
             return (
                 <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
 
-                    <GLUI_ImgButton image={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
+                    <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
                         setAddStatus(1);
                     }}/>
 
@@ -181,15 +189,18 @@ function GLUI_ListContainer(props){
                 </Col>
             );
         }
-        if(addStatus == true){
+        else if(addStatus == 1){
             return (
                 <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
-
-                    <GLUI_Input onClick={()=>{
-                       
-                    }}/>
-
                     Set Label
+                    <InputGroup>
+                        <GLUI_Input onClick={()=>{
+
+                        }}/>
+                    </InputGroup>
+                    <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_SUBMIT} onClick={()=>{
+                        setAddStatus(0);
+                    }}/>
 
                 </Col>
             );
