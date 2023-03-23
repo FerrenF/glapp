@@ -6,4 +6,5 @@ export const GLCommonImages = {
 
 export const GLCommonIcon = {
     GL_ICON_FILE : require("../assets/icons/file.svg").default,
+    GL_ICON_ADD : require("../assets/icons/plus.svg").default
 };

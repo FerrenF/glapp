@@ -2,13 +2,14 @@
 import {Col, Row, Container} from 'react-bootstrap';
 import GLUI_MainContainer from '../components/GLUI_MainContainer'
 //import GLUI_ListContainer from "../components/GLUI_ListContainer";
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import GLListProvider, {ListContext} from "../services/GLListContext";
 import GLUI_ImgButton from "../components/GLUI_ImgButton";
 import GLUI_ContentContainer from "../components/GLUI_ContentContainer";
 import GLUI_Header from "../components/GLUIHeader";
 
 import {GLCommonIcon} from "../assets/common.js"
+import GLUI_Input from "../components/GLUI_Input";
 
 
 
@@ -54,6 +55,14 @@ function GLUI_ListHeader() {
 
 
 function GLUI_ListContainer(props){
+
+    //Should my state variable be here? Well..
+
+    //const [addStatus, setAddStatus] = useState(0);
+
+    // I put this here first, but every time I clicked the button the entire container flashed as it redrew. that didn't look good.
+    // Why did it do that? Maybe I need to find another place to put it (farther down)
+
 
     //const [lists, setLists] = useContext(ListContext);
     // Until a source for the list is made, this is a dummy list to test render layout for items.
@@ -152,19 +161,40 @@ function GLUI_ListContainer(props){
         );
     }
 
-    const GLUI_ListItemAdd = ({label, icon}) => {
-        return (
-            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
+    const GLUI_ListItemAdd = () => {
 
-                <GLUI_ImgButton image={icon} onClick={()=>{
+        // After moving this statement here, my performance improved vastly. can you imagine why?
+        // Set state renders whichever component it is attached to the scope of.
+        const [addStatus, setAddStatus] = useState(0);
 
 
-                }}/>
+        if(addStatus == false){
+            return (
+                <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
 
-                {label}
+                    <GLUI_ImgButton image={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
+                        setAddStatus(1);
+                    }}/>
 
-            </Col>
-        );
+                    Add Item
+
+                </Col>
+            );
+        }
+        if(addStatus == true){
+            return (
+                <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+
+                    <GLUI_Input onClick={()=>{
+                       
+                    }}/>
+
+                    Set Label
+
+                </Col>
+            );
+        }
+
     }
 
 
@@ -174,10 +204,19 @@ function GLUI_ListContainer(props){
 
             // The CSS definition for this component is located here. Within this lambda function. Couldn't go wrong.
             <Row className = "GLUI_ListContainer mx-auto">
-                    {initialValue.map((value) => {
-                   return (<GLUI_ListItem label={value.name} icon={value.icon}></GLUI_ListItem>);
-                  })}
+
+                {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
+                {
+                    initialValue.map(
+                            (value) => {
+                                 return (<GLUI_ListItem label={value.name} icon={value.icon}></GLUI_ListItem>);
+                             })
+                }
+                {/* Now we need our addList item*/}
+                <GLUI_ListItemAdd/>
             </Row>
+
+
         )
     }
 

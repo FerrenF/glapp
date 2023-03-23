@@ -24,6 +24,10 @@
     --color-error: #533440;
 }
 
+
+#root{
+    background-color: var(--color-primary-dark);
+}
 .GLAppMain{
     background-color: var(--color-primary-dark);
     color: var(--text-color-dark);
@@ -33,12 +37,22 @@
 /*
     This neat trick eliminates a sub-grid.
  */
-
+.GLUI_ImgButton {
+    cursor:pointer;
+}
+.GLUI_ImgButton {
+    cursor:pointer;
+}
 .GLUI_ListContainer {
     max-width: 75%;
 }
-.GLUI_ListItem {
+.GLUI_ListItem, .GLUI_ListItemAdd{
     display:block;
+    scale:80%;
+    background-color: var(--color-primary);
+    border-radius: 2em;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .GLUI_MainContainer {
     height:100vh;
