@@ -4,7 +4,7 @@ import GLUI_MainContainer from '../components/GLUI_MainContainer'
 //import GLUI_ListContainer from "../components/GLUI_ListContainer";
 import React, {useContext, useState} from "react";
 
-import GLListProvider, {ListContext} from "../services/GLListContext";
+import {ListContext, GLListProvider, UseLists, UseListsDispatch} from "../services/GLListContext";
 
 import GLUI_ImgButton from "../components/GLUI_ImgButton";
 import GLUI_ContentContainer from "../components/GLUI_ContentContainer";
@@ -42,8 +42,12 @@ export default function GLUI_ViewMain(props) {
         <GLUI_MainContainer>
 
             <GLUI_ListHeader/>
-
-            <GLUI_ListContainer/>
+            <GLListProvider>
+                {//This ListContext Provider, GLListProvider provides us with our global lists value, and in the future will provide reducer
+                    // tasks for the remainder of the app functionality.
+                }
+                <GLUI_ListContainer/>
+            </GLListProvider>
         </GLUI_MainContainer>
     );
 }
@@ -55,31 +59,100 @@ function GLUI_ListHeader() {
 }
 
 
+function GLUI_ListItemImgBtn({icon, onClick}) {
 
+    const [enlarged, setEnlarged] = useState(false);
+    return(<Image style={ {scale: (enlarged ? "1.25" : "1")}} fluid={true} className="rounded GLUI_ImgButton " src={icon}
+                  alt="Description" onClick={onClick} onMouseOver={()=>setEnlarged(true)} onMouseOut={()=>setEnlarged(false)}/>
+    );
+}
+
+
+// This button has three different states depending on which part of the 'add an item to the list' process they are in.
+
+function GLUI_ListItemAdd(){
+    const dispatch = UseListsDispatch();
+    // After moving this statement here, my performance improved vastly. can you imagine why?
+    // Set state renders whichever component it is attached to the scope of.
+    const [addStatus, setAddStatus] = useState(0);
+    const [text, setText] = useState('');
+    const [img, setImg] = useState(GLCommonIcon.GL_ICON_ADD);
+
+    if(addStatus == 0){
+        return (
+            <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+                <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
+                    setAddStatus(1);
+                }}/>
+                Add Item
+            </Col>
+        );
+    }
+    else if(addStatus == 1){
+        return (
+            <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+                Set Label
+                <InputGroup>
+                    <GLUI_Input onChange={(e)=>setText(e.target.value)} onClick={()=>{
+
+                    }}/>
+                </InputGroup>
+                <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_SUBMIT} onClick={()=>{
+                    setAddStatus(2);
+                }}/>
+
+            </Col>
+        );
+    }
+    else if(addStatus == 2){
+
+        //Todo: The user needs to be able to select an image here. Maybe itll be a file prompt, or maybe it'll be a modal offering choices
+        // that already exist on the server.
+        return (
+            <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+                <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADDIMG} onClick={()=>{
+                    dispatch({
+                        type: 'added',
+                        icon: GLCommonIcon.GL_ICON_FILE,
+                        name: text
+                    });
+                    setAddStatus(0);
+                }}/>
+                Set Image
+            </Col>
+        );
+    }
+}
 
 function GLUI_ListContainer(props){
 
-    //Should my state variable be here? Well..
 
-    //const [addStatus, setAddStatus] = useState(0);
+    // An inline component, that is, this is a valid react component defined within a component.
+    const GLUI_ListItem = ({label, icon}) => {
+        const [enlarged, setEnlarged] = useState(false);
+        return (
+            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
+                <GLUI_ListItemImgBtn icon={icon}/>
+                    {label}
 
-    // I put this here first, but every time I clicked the button the entire container flashed as it redrew. that didn't look good.
-    // Why did it do that? Maybe I need to find another place to put it (farther down)
+            </Col>
+        );
+    }
 
+    //Todo: add this to the figma
+    //This component is the item in the list the user must click to add more items.
 
-    //const [lists, setLists] = useContext(ListContext);
-    // Until a source for the list is made, this is a dummy list to test render layout for items.
-    const initialValue = [
-            {
-                id : 1,
-                name: "Item 1",
-                user_id: 0,
-                created: Date.now(),
-                changed: 0,
-                icon: GLCommonIcon.GL_ICON_FILE,
-                order: 0,
-                pinned: false
-            }, {
+    const initialValues = [
+        {
+            id : 1,
+            name: "Item 1",
+            user_id: 0,
+            created: Date.now(),
+            changed: 0,
+            icon: GLCommonIcon.GL_ICON_FILE,
+            order: 0,
+            pinned: false
+        }, {
             id : 2,
             name: "Item 2",
             user_id: 0,
@@ -145,114 +218,36 @@ function GLUI_ListContainer(props){
         }
 
 
-        ];
-
-
-    //This component adds the enlarge on mouse over animation.
-    const GLUI_ListItemImgBtn = ({icon, onClick}) => {
-        const [enlarged, setEnlarged] = useState(false);
-        return(<Image style={ {scale: (enlarged ? "1.25" : "1")}} fluid={true} className="rounded GLUI_ImgButton " src={icon}
-                      alt="Description" onClick={onClick} onMouseOver={()=>setEnlarged(true)} onMouseOut={()=>setEnlarged(false)}/>
-    );
-    }
-    // An inline component, that is, this is a valid react component defined within a component.
-    const GLUI_ListItem = ({label, icon}) => {
-        const [enlarged, setEnlarged] = useState(false);
-        return (
-            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
-                <GLUI_ListItemImgBtn icon={icon}/>
-                    {label}
-
-            </Col>
-        );
-    }
-
-    //Todo: add this to the figma
-    //This component is the item in the list the user must click to add more items.
-    const GLUI_ListItemAdd = () => {
-
-        // After moving this statement here, my performance improved vastly. can you imagine why?
-        // Set state renders whichever component it is attached to the scope of.
-        const [addStatus, setAddStatus] = useState(0);
-
-
-        if(addStatus == 0){
-            return (
-                <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
-
-                    <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
-                        setAddStatus(1);
-                    }}/>
-
-                    Add Item
-
-                </Col>
-            );
-        }
-        else if(addStatus == 1){
-            return (
-                <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
-                    Set Label
-                    <InputGroup>
-                        <GLUI_Input onClick={()=>{
-
-                        }}/>
-                    </InputGroup>
-                    <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_SUBMIT} onClick={()=>{
-                        setAddStatus(0);
-                    }}/>
-
-                </Col>
-            );
-        }
-
-    }
-
+    ];
 
     // An inline lambda statement returning a list of GLUI_ListItems within a grid container.
-    const generateListItemsContent = () => {
-        return (
-
-            // The CSS definition for this component is located here. Within this lambda function. Couldn't go wrong.
-            <Row className = "GLUI_ListContainer mx-auto">
-
-                {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
-                {
-                    initialValue.map(
-                            (value) => {
-                                 return (<GLUI_ListItem label={value.name} icon={value.icon}></GLUI_ListItem>);
-                             })
-                }
-                {/* Now we need our addList item*/}
-                <GLUI_ListItemAdd/>
-            </Row>
-
-
-        )
-    }
-
-
+    const lists = UseLists();
 
     return(
 
         //This is where the render method of this function is located.
         <GLUI_ContentContainer>
 
-            {//This ListContext provides us with our global lists value, and in the future will provide reducer
-                // tasks for the remainder of the app functionality. I was originally going to make this a simple
-                // use state but the fact that I need not just a setLists function to give the app the functionality
-                // it needs. an example of these reducer tasks could be 'changed', 'add', 'remove'
-            }
-            <ListContext.Provider value={initialValue}>
+                <Row className = "GLUI_ListContainer mx-auto">
+                    {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
+                    {
+                        lists.map(
+                            (value) => {
+                                return (<GLUI_ListItem label={value.name} icon={value.icon}></GLUI_ListItem>);
+                            })
 
+                    }
 
-                {generateListItemsContent()}
-            </ListContext.Provider>
-
+                    {/* Now we need our addList item*/}
+                    <GLUI_ListItemAdd/>
+                </Row>
 
         </GLUI_ContentContainer>
     );
+
     //
 }
+//This component adds the enlarge on mouse over animation.
+
 // ListContainer end
 
