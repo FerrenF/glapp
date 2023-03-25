@@ -2,10 +2,10 @@
 import {Form, InputGroup} from "react-bootstrap";
 
 
-export default function GLUI_Input({onClick}){
+export default function GLUI_Input({onClick, onChange}){
     return (
-        <InputGroup>
-            <Form.Control className=""  alt="Set List Name" onClick={onClick} value={"List Name"}/>
-        </InputGroup>
+
+            <Form.Control className="GLUI_Input"  alt="Set List Name" onClick={onClick} onChange={onChange} placeholder={"List Name"}/>
+
     );
 }
