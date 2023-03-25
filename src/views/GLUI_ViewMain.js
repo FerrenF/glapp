@@ -1,5 +1,5 @@
 
-import {Col, Row, Container} from 'react-bootstrap';
+import {Col, Row, Container, Button} from 'react-bootstrap';
 import GLUI_MainContainer from '../components/GLUI_MainContainer'
 //import GLUI_ListContainer from "../components/GLUI_ListContainer";
 import React, {useContext, useState} from "react";
@@ -148,7 +148,7 @@ function GLUI_ListContainer(props){
     // An inline component, that is, this is a valid react component defined within a component.
     const GLUI_ListItem = ({label, icon}) => {
         return (
-            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
+            <Col xs={12} md={6} lg={4} xl={3} className={"GLUI_ListItem row mx-auto"}>
 
                     <GLUI_ImgButton image={icon} onClick={()=>{
 

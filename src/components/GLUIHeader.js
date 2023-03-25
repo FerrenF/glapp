@@ -3,11 +3,12 @@ import {Container, Row, Col} from 'react-bootstrap';
 import {GLCommonImages} from "../assets/common";
 import GLUI_ImgButton from './GLUI_ImgButton'
 import {Link} from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 const GLUI_Header = ({link, menuClick, menuOver}) => {
     return (
 
-        <Container className = "GLUI_Header">
+        <Container className = "GLUI_Header mt-4">
             <Row className = "GLUIHeaderTop">
                 <Col className={"GLUI_HeaderButtonContainer"} xs={4} md={2}>
                     <Link to="/">
@@ -18,7 +19,7 @@ const GLUI_Header = ({link, menuClick, menuOver}) => {
                     </Link>
                 </Col>
 
-                <Col className={"GLUI_HeaderButtonContainer"} xs={{span: 4, offset: 4}} md={{ span: 2, offset: 8 }}>
+                <Col className={"GLUI_HeaderButtonContainer d-flex"} style={{maxWidth: "60px"}} xs={{span: 4, offset: 6}} md={{ span: 2, offset: 9}}>
                     <GLUI_ImgButton image={GLCommonImages.GL_MENUICON} onClick={()=>{
 
 
@@ -26,12 +27,16 @@ const GLUI_Header = ({link, menuClick, menuOver}) => {
                 </Col>
 
             </Row>
+
+            <hr/>
             <Row className = "GLUIHeaderBottom">
+                
                 <Col>
-                    <h2>What can GL do for uuuuuu?</h2>
+                    <h2>What's GLAPpening?</h2>
                 </Col>
 
             </Row>
+            <hr/>
 
         </Container>
     );

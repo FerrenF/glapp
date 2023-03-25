@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import io from 'socket.io-client';
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
     Routes,
     Route,
