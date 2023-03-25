@@ -1,5 +1,7 @@
 
-import {Col, Row, Container, InputGroup} from 'react-bootstrap';
+
+import {Col, Row, Container, Button, InputGroup} from 'react-bootstrap';
+
 import GLUI_MainContainer from '../components/GLUI_MainContainer'
 //import GLUI_ListContainer from "../components/GLUI_ListContainer";
 import React, {useContext, useState} from "react";
@@ -83,11 +85,13 @@ function GLUI_ListItemAdd(){
 
     if(addStatus == 0){
         return (
-            <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+
+            <Col xs={12} md={6} lg={4} xl={3} className={"GLUI_ListItem row mx-auto"}>
                 <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
                     setAddStatus(1);
                 }}/>
                 Add Item
+
             </Col>
         );
     }
