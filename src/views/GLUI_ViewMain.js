@@ -86,7 +86,7 @@ function GLUI_ListItemAdd(){
     if(addStatus == 0){
         return (
 
-            <Col xs={12} md={6} lg={4} xl={3} className={"GLUI_ListItem row mx-auto"}>
+            <Col xs={12} md={6} lg={4} xl={3} className={"GLUI_ListItem row"}>
                 <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADD} onClick={()=>{
                     setAddStatus(1);
                 }}/>
