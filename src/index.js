@@ -10,11 +10,12 @@ import reportWebVitals from './reportWebVitals';
 
 //This gives our components access to browser page history and current URL for this window
 import {BrowserRouter} from "react-router-dom";
+import {GLRoutes} from "./components/GLUIRoutes";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-            <GLApp />
+        <GLRoutes/>
     </React.StrictMode>
 );
 

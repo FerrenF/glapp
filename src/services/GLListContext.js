@@ -12,7 +12,6 @@ const listreducer = (tasks, action)=> {
     switch (action.type) {
         case 'added': {
             let newLists = [...tasks, {
-                //id: tasks.length,
                 order: tasks.length,
                 name: action.name,
                 pinned: false,
@@ -34,7 +33,6 @@ const listreducer = (tasks, action)=> {
             });
         }
         case 'set': {
-            console.log(JSON.stringify(action.lists));
             return action.lists;
         }
         case 'deleted': {
