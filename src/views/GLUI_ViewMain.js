@@ -14,6 +14,7 @@ import {GLCommonIcon} from "../assets/common.js"
 import GLUI_Input from "../components/GLUI_Input";
 import Image from "react-bootstrap/Image";
 
+import {GLDBWrapper} from "../services/GLDBWrapper";
 
 
 // IN THIS FILE:
@@ -32,15 +33,17 @@ import Image from "react-bootstrap/Image";
 
 
 
+
+
 //This is the view that all users will see when they hit the main page. Keep this at either the top or bottom for
 //easy access.
 
 
 //Main menu view.
 export default function GLUI_ViewMain(props) {
+
     return (
         <GLUI_MainContainer>
-
             <GLUI_ListHeader/>
             <GLListProvider>
                 {//This ListContext Provider, GLListProvider provides us with our global lists value, and in the future will provide reducer
@@ -126,7 +129,7 @@ function GLUI_ListItemAdd(){
 
 function GLUI_ListContainer(props){
 
-
+    const [listsLoaded, setListsLoaded] = useState(false);
     // An inline component, that is, this is a valid react component defined within a component.
     const GLUI_ListItem = ({label, icon}) => {
         const [enlarged, setEnlarged] = useState(false);
@@ -139,109 +142,46 @@ function GLUI_ListContainer(props){
         );
     }
 
+    const lists = UseLists();
+    const dispatch = UseListsDispatch();
     //Todo: add this to the figma
     //This component is the item in the list the user must click to add more items.
-
-    const initialValues = [
-        {
-            id : 1,
-            name: "Item 1",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 0,
-            pinned: false
-        }, {
-            id : 2,
-            name: "Item 2",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 1,
-            pinned: false
-        }, {
-            id : 3,
-            name: "Item 3",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 2,
-            pinned: false
-        }, {
-            id : 4,
-            name: "Item 4",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 3,
-            pinned: false
-        }, {
-            id : 5,
-            name: "Item 5",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 4,
-            pinned: false
-        }, {
-            id : 6,
-            name: "Item 6",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 5,
-            pinned: false
-        }, {
-            id : 7,
-            name: "Item 7",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 6,
-            pinned: false
-        }, {
-            id : 8,
-            name: "Item 8",
-            user_id: 0,
-            created: Date.now(),
-            changed: 0,
-            icon: GLCommonIcon.GL_ICON_FILE,
-            order: 7,
-            pinned: false
-        }
-
-
-    ];
-
+    const db = new GLDBWrapper();
     // An inline lambda statement returning a list of GLUI_ListItems within a grid container.
-    const lists = UseLists();
+
+
+    if(!listsLoaded) {
+        setListsLoaded(true);
+        db.get_lists().then((response) => {
+
+            if (response == null) {
+                console.log("No current lists");
+            } else {
+                console.log("Loaded lists.");
+                dispatch({
+                    type: 'set',
+                    lists: response
+                })
+            }
+        });
+    }
 
     return(
-
         //This is where the render method of this function is located.
         <GLUI_ContentContainer>
-
                 <Row className = "GLUI_ListContainer mx-auto">
                     {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
                     {
+
                         lists.map(
                             (value) => {
                                 return (<GLUI_ListItem label={value.name} icon={value.icon}></GLUI_ListItem>);
                             })
-
                     }
 
                     {/* Now we need our addList item*/}
                     <GLUI_ListItemAdd/>
                 </Row>
-
         </GLUI_ContentContainer>
     );
 

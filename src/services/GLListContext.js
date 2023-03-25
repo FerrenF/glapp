@@ -1,17 +1,18 @@
 //import * as React from 'react';
 import React, {createContext, useState, useContext, useReducer} from 'react';
 import {GLCommonIcon} from "../assets/common";
+import {GLDBWrapper} from "./GLDBWrapper";
 
 
 
 
-
+const dbobject = new GLDBWrapper();
 
 const listreducer = (tasks, action)=> {
     switch (action.type) {
         case 'added': {
-            return [...tasks, {
-                id: tasks.length,
+            let newLists = [...tasks, {
+                //id: tasks.length,
                 order: tasks.length,
                 name: action.name,
                 pinned: false,
@@ -20,6 +21,8 @@ const listreducer = (tasks, action)=> {
                 changed: Date.now(),
                 user_id: 0      // Todo: user_id implementation here
             }];
+            dbobject.set_lists(newLists);
+            return newLists;
         }
         case 'changed': {
             return tasks.map(t => {
@@ -29,6 +32,10 @@ const listreducer = (tasks, action)=> {
                     return t;
                 }
             });
+        }
+        case 'set': {
+            console.log(JSON.stringify(action.lists));
+            return action.lists;
         }
         case 'deleted': {
             return tasks.filter(t => t.id !== action.id);
