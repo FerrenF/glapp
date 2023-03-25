@@ -97,7 +97,7 @@ function GLUI_ListItemAdd(){
     }
     else if(addStatus == 1){
         return (
-            <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+            <Col md={3} xs={6} lg={4} xl={3} className={"GLUI_ListItemAdd row"}>
                 Set Label
                 <InputGroup>
                     <GLUI_Input onChange={(e)=>setText(e.target.value)} onClick={()=>{
@@ -116,7 +116,7 @@ function GLUI_ListItemAdd(){
         //Todo: The user needs to be able to select an image here. Maybe itll be a file prompt, or maybe it'll be a modal offering choices
         // that already exist on the server.
         return (
-            <Col md={3} xs={6} className={"GLUI_ListItemAdd row"}>
+            <Col md={3} xs={6} lg={4} xl={3} className={"GLUI_ListItemAdd row"}>
                 <GLUI_ListItemImgBtn icon={GLCommonIcon.GL_ICON_ADDIMG} onClick={()=>{
                     dispatch({
                         type: 'added',
