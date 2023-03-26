@@ -114,7 +114,7 @@ function GLUI_ListItemAdd(){
 
 
 // This contains most of the components that make up our list of lists display.
-function GLUI_ListContainer(props){
+const GLUI_ListContainer = (props)=>{
 
     const [listsLoaded, setListsLoaded] = useState(false);
 

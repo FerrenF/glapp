@@ -2,13 +2,20 @@
 import {GL_CONFIG_DB} from '../config';
 import Dexie, { Table } from 'dexie';
 
-
-
 // GLDBWrapper is an old-fashioned oop based wrapper for Dexie giving us GLApp specific functions such as database
 // initialization, list modification, item list modification, and more.
 // As the above list begins to grow, should we consider splitting this class? It will probably get pretty large.
 let GL_APP_USER = 0;
+
+
+// I route all console logging in this wrapper through this function - helps shorten it and allows us to specify what
+// debug messages we want to recieve to console by file.
+function dbconsole(m){
+    if(!GL_CONFIG_DB.GL_DEBUG_DB)return;
+    console.log(m);
+}
 export class GLDBWrapper extends Dexie {
+
 
 
     // This function saves me some code with promise rejection/error callbacks. Most of them function the same way when
@@ -18,11 +25,11 @@ export class GLDBWrapper extends Dexie {
      standardPromiseRejection = (m) =>{
         return [
             ()=>{
-                console.log(m);
+                dbconsole(m);
                 return [];
             },
             (e)=>{
-                console.log(m + ": " + e);
+                dbconsole(m + ": " + e);
                 return [];
             }
         ]
@@ -47,7 +54,7 @@ export class GLDBWrapper extends Dexie {
 
 
        this.open_db().then(()=>{
-           console.log("Database initialized.");
+           dbconsole("Database initialized.");
        })
     }
 
@@ -57,7 +64,7 @@ export class GLDBWrapper extends Dexie {
             let results = this.table("list").where("user_id").equals(GL_APP_USER).toArray();
             return results;
         }).then((res)=>{
-            console.log("Retrieved lists for user_id " + GL_APP_USER);
+                dbconsole("Retrieved lists for user_id " + GL_APP_USER);
             return res;
         },
             this.standardPromiseRejection("Failed to retrieve lists for user_id " + GL_APP_USER)[0]
@@ -72,7 +79,7 @@ export class GLDBWrapper extends Dexie {
             return {};
         }
         return Promise.resolve().then(()=>this.table("list").get(Number(id))).then((results)=>{
-            console.log("Retrieved list_id " + id);
+                dbconsole("Retrieved list_id " + id);
             return results;
         },
             this.standardPromiseRejection("Failed to retrieve list id " + id)[0]
@@ -84,11 +91,11 @@ export class GLDBWrapper extends Dexie {
     // Replaces the whole set of lists. Dangerous.
     set_lists(lists) {
          this.list.bulkPut(lists).then(()=>{
-             console.log("Bulk items added.");
+                 dbconsole("Bulk items added.");
          },
              ()=>{
-             console.log("Bulk items failed to put.");
-         }).catch((r)=>{console.log("Failed to add items: "+r)});
+                 dbconsole("Bulk items failed to put.");
+         }).catch((r)=>{dbconsole("Failed to add items: "+r)});
 
 
     }
@@ -96,9 +103,10 @@ export class GLDBWrapper extends Dexie {
     // Returns an array of items associated with the specified list_id
     get_list_items(list_id){
         return Promise.resolve().then(()=>{
-            return this.table("item").where("list_id").equals(list_id).toArray();
+            let r = this.table("item").where("list_id").equals(Number(list_id)).toArray();
+            return r;
         }).then((res)=>{
-            console.log("Retrieved items for list_id " + list_id);
+                dbconsole("Retrieved items for list_id " + list_id);
             return res;
         },
             this.standardPromiseRejection("Failed to retrieve items for list " + list_id)[0]
