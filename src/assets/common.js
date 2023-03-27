@@ -9,5 +9,6 @@ export const GLCommonIcon = {
     GL_ICON_ADD: require("../assets/icons/plus.svg").default,
     GL_ICON_SUBMIT: require("../assets/icons/check.svg").default,
     GL_ICON_ADDIMG: require("../assets/icons/picture.svg").default,
-    GL_ICON_GRIP: require("../assets/icons/more-vertical-f.svg").default
+    GL_ICON_GRIP: require("../assets/icons/more-vertical-f.svg").default,
+    GL_ICON_DOWN: require("../assets/icons/chevron-down.svg").default,
 }

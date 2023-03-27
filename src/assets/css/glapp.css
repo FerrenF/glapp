@@ -23,7 +23,9 @@
     --color-warning: #A47786;
     --color-error: #533440;
 }
-
+html {
+    font-size: 1rem;
+}
 
 #root{
     background-color: var(--color-primary-dark);
@@ -62,8 +64,11 @@
     border-radius:10px;
 }
 .GLUIRootContainer{
-    width:60%;
     height:4em;
+}
+
+.GLUIFolderContainer{
+    height:3em;
 }
 
 .ItemListContainer .row {
@@ -71,8 +76,13 @@
 }
 .ItemListContainer .row div img{
     display: flex;
-    height: 3em;
 }
 .ItemListContainer .row div input{
    scale:2.0;
+}
+.GLUI_RootAddBtn {
+    height: 3em;
+}
+.GLUI_ItemAddBtn {
+    height: 1.5em;
 }

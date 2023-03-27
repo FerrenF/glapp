@@ -7,7 +7,7 @@ import {GLItemsProvider, UseItems, UseItemsDispatch} from "../services/GLItemsCo
 import {GLDbg} from "../services/util";
 import {ListContext} from "../services/GLListContext";
 
-import {Container, Col, Row, InputGroup, FormCheck} from "react-bootstrap";
+import {Container, Col, Row, InputGroup, FormCheck, Form} from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 import {GLCommonIcon} from "../assets/common";
 
@@ -67,56 +67,119 @@ function GLUI_ViewContainer(){
     }
     return (
         <Container style={ {width:"100%"}}>
+            <GLUI_RootContainer list={itemsContext.listHead}/>
+            <GLUI_AddFolderContainer/>
+            <GLUI_FolderContainer/>
+            <GLUI_ItemContainer/>
 
-            <Row className={"justify-content-start my-1"} >
-                <Col md={2}></Col>
-                <Col md={8} className={"GLUIRootContainer ItemListContainer container"}>
-                    <Row className={"align-items-center"}>
-                        <Col md={2}>
-                            <GLUI_GripBtn/>
-                        </Col>
-                        <Col md={1}>
-                            <GLUI_Checkbox/>
-                        </Col>
-                        <Col md={4}>
-                            <h3>{itemsContext.listHead.name}</h3>
-                        </Col>
-                        <Col md={2}>
-                            <GLUI_RootAddBtn icon={GLCommonIcon.GL_ICON_ADD}/>
-                        </Col>
-                        <Col md={2}>
-
-                        </Col>
-                    </Row>
-                </Col>
-                <Col md={3}></Col>
-            </Row>
-
-            <Row className={"justify-content-start my-1"} >
-                <Col md={2}></Col>
-                <Col md={8} className={"GLUIRootContainer ItemListContainer container"}>
-                    <Row className={"align-items-center"}>
-                        <Col md={2}>
-                            <GLUI_GripBtn/>
-                        </Col>
-                        <Col md={1}>
-                            <GLUI_Checkbox/>
-                        </Col>
-                        <Col md={4}>
-                            <h3>{itemsContext.listHead.name}</h3>
-                        </Col>
-                        <Col md={2}>
-                            <GLUI_RootAddBtn icon={GLCommonIcon.GL_ICON_ADD}/>
-                        </Col>
-                        <Col md={2}>
-
-                        </Col>
-                    </Row>
-                </Col>
-                <Col md={3}></Col>
-            </Row>
         </Container>
    );
+}
+
+function GLUI_RootContainer({list}){
+    return( <Row className={"justify-content-start my-1"} >
+        <Col md={2}></Col>
+        <Col md={8} className={"GLUIRootContainer ItemListContainer container"}>
+            <Row className={"align-items-center"}>
+                <Col md={1}>
+                    <GLUI_GripBtn/>
+                </Col>
+                <Col md={1}>
+                    <GLUI_Checkbox/>
+                </Col>
+                <Col md={7}>
+                    <h3>{list.name}</h3>
+                </Col>
+                <Col md={1}>
+                    <GLUI_RootAddBtn icon={GLCommonIcon.GL_ICON_ADD}/>
+                </Col>
+                <Col md={2}>
+
+                </Col>
+            </Row>
+        </Col>
+        <Col md={3}></Col>
+    </Row>);
+}
+function GLUI_AddFolderContainer({folder}){
+    return(<Row className={"justify-content-start my-1"} >
+        <Col md={4}></Col>
+        <Col md={8} className={"GLUIFolderContainer ItemListContainer container"}>
+            <Row className={"align-items-center"}>
+                <Col md={2}>
+                    <GLUI_GripBtn/>
+                </Col>
+                <Col md={1}>
+                    <GLUI_Checkbox/>
+                </Col>
+                <Col md={7}>
+                    <Form.Text className={""} placeholder={"Enter item name"}>
+
+                    </Form.Text>
+                </Col>
+                <Col md={1}>
+                    <GLUI_ItemAddBtn/>
+                </Col>
+                <Col md={1}>
+                    <GLUI_ExpandContract/>
+                </Col>
+            </Row>
+        </Col>
+        <Col md={1}></Col>
+    </Row>);
+}
+function GLUI_FolderContainer({folder}){
+    return(<Row className={"justify-content-start my-1"} >
+        <Col md={4}></Col>
+        <Col md={8} className={"GLUIFolderContainer ItemListContainer container"}>
+            <Row className={"align-items-center"}>
+                <Col md={2}>
+                    <GLUI_GripBtn/>
+                </Col>
+                <Col md={1}>
+                    <GLUI_Checkbox/>
+                </Col>
+                <Col md={7}>
+                    <h3>A folder item</h3>
+                </Col>
+                <Col md={1}>
+                    <GLUI_ItemAddBtn/>
+                </Col>
+                <Col md={1}>
+                    <GLUI_ExpandContract/>
+                </Col>
+            </Row>
+        </Col>
+        <Col md={1}></Col>
+    </Row>);
+}
+function GLUI_ItemContainer({item}){
+    return (<>
+        <Row className={"justify-content-start my-1"} >
+            <Col md={5}></Col>
+            <Col md={7} className={"GLUIFolderContainer ItemListContainer container"}>
+                <Row className={"align-items-center"}>
+                    <Col md={2} sm={1}>
+                        <Row>
+                            <Col><GLUI_GripBtn/></Col>
+                            <Col><GLUI_Checkbox/></Col>
+                        </Row>
+
+                    </Col>
+                    <Col md={8} sm={8}>
+                        <h5>An item, it's name could be anything</h5>
+                    </Col>
+                    <Col md={1} sm={0.5}>
+                        <GLUI_ItemAddBtn/>
+                    </Col>
+                    <Col md={1} sm={1}>
+                        <GLUI_ExpandContract/>
+                    </Col>
+                </Row>
+            </Col>
+            <Col md={1}></Col>
+        </Row>
+        </>);
 }
 function GLUI_Checkbox({onClick}) {
     return(<InputGroup>
@@ -124,9 +187,20 @@ function GLUI_Checkbox({onClick}) {
     </InputGroup>
     );
 }
-function GLUI_RootAddBtn({icon, onClick}) {
-    return(<Image fluid={true} className="rounded GLUI_ImgButton " src={icon}
-                  alt="Description" onClick={onClick} />
+function GLUI_RootAddBtn() {
+    return(<Image className="rounded GLUI_ImgButton GLUI_RootAddBtn" src={GLCommonIcon.GL_ICON_ADD}
+                  alt="Description"  />
+    );
+}
+function GLUI_ItemAddBtn() {
+    return(<Image  className="rounded GLUI_ImgButton GLUI_ItemAddBtn" src={GLCommonIcon.GL_ICON_ADD}
+                  alt="Description"  />
+    );
+}
+
+function GLUI_ExpandContract() {
+    return(<Image className="rounded GLUI_ImgButton GLUI_ExpandContract" src={GLCommonIcon.GL_ICON_DOWN}
+                  alt="Description"/>
     );
 }
 function GLUI_GripBtn() {

@@ -64,8 +64,8 @@ function GLUI_ListItemImgBtn({icon, onClick}) {
 
 
 // This button has three different states depending on which part of the 'add an item to the list' process they are in.
-function GLUI_ListItemAdd(){
-
+function GLUI_ListItemAdd(props){
+    const listContext = UseLists();
     const dispatch = UseListsDispatch();
     const [addStatus, setAddStatus] = useState(0);
     const [text, setText] = useState('');
@@ -73,39 +73,37 @@ function GLUI_ListItemAdd(){
     //Pull from this list with an index depending on our status.
     const _img = [GLCommonIcon.GL_ICON_ADD,GLCommonIcon.GL_ICON_SUBMIT,GLCommonIcon.GL_ICON_ADDIMG];
 
-
-
     // This is an inline template component for the input box that appears when status == 1, or the user has clicked on
     // the button to add an item. It will not render otherwise and is simply an empty variable.
-    const inpt = () =>{
-        if(addStatus == 1){
-            return (<>
-                Set Label
-                <InputGroup>
-                    <GLUI_Input onChange={(e)=>setText(e.target.value)} onClick={()=>{
-                    }}/>
-                </InputGroup>
-            </>);
-        }
-        return <></>;
-    }
-
+    const inpt = () => (addStatus == 1) ? <>
+        Set Label
+        <InputGroup>
+            <GLUI_Input onChange={(e)=>setText(e.target.value)} onClick={()=>{
+            }}/>
+        </InputGroup>
+    </> : <></>;
 
     //We adjust various properties of this button-to-be depending on the status.
     return (
         <Col xs={12} md={6} lg={4} xl={3} className={"GLUI_ListItem row mx-auto"}>
             {inpt()}
             <GLUI_ListItemImgBtn icon={_img[addStatus]} onClick={()=>{
-                if(addStatus <2) {
-                    setAddStatus(addStatus+1);
-                    return;
+                switch (addStatus) {
+                    case 0:
+                    case 1:
+                        setAddStatus(addStatus+1);
+                        break;
+                    case 2:
+                        let newID = Math.max(...listContext.lists.map((o)=>o.id))+1;
+                        dispatch({
+                            type: 'added',
+                            icon: GLCommonIcon.GL_ICON_FILE,
+                            name: text,
+                            id: newID
+                        });
+                        setAddStatus(0);
+                    default:
                 }
-                dispatch({
-                    type: 'added',
-                    icon: GLCommonIcon.GL_ICON_FILE,
-                    name: text
-                });
-                setAddStatus(0);
             }}/>
             {(addStatus == 0) ? "Add Item" : (addStatus == 2) ? "Set Image" : ""}
         </Col>
@@ -116,9 +114,6 @@ function GLUI_ListItemAdd(){
 // This contains most of the components that make up our list of lists display.
 const GLUI_ListContainer = (props)=>{
 
-    const [listsLoaded, setListsLoaded] = useState(false);
-
-
     //This inline component represents what an item should look like when rendered on our list of lists.
     const GLUI_ListItem = ({label, icon, id}) => {
         return (
@@ -126,36 +121,42 @@ const GLUI_ListContainer = (props)=>{
                 <Link to={"list/"+id} style={{width:"100%"}}>
                      <GLUI_ListItemImgBtn icon={icon} onClick={(e)=>{
 
+                         //Todo: This action should stop the add item function.
+
                      }}/>
                 </Link>
                     {label}
-
             </Col>
         );
     }
 
-
-
     //Resources
-    const lists = UseLists();
+    const listContext = UseLists();
     const dispatch = UseListsDispatch();
-    const db = new GLDBWrapper();
+    const dbObject = new GLDBWrapper();
 
 
-    if(!listsLoaded) {
-        setListsLoaded(true);
-        db.get_lists().then((response) => {
-
+    if(!listContext.isLoaded) {
+        dbObject.get_lists().then((response) => {
             if (response == null) {
                 console.log("No current lists");
             } else {
                 console.log("Loaded lists.");
                     dispatch({
-                        type: 'set',
+                        type: 'load',
                         lists: response
                     })
             }
+        }).then(()=>{
+            dispatch({
+                type: "loaded",
+                isLoaded: true
+            });
         });
+        return <></>;
+    }
+    else {
+
     }
 
 
@@ -165,14 +166,14 @@ const GLUI_ListContainer = (props)=>{
                 <Row className = "GLUI_ListContainer mx-auto">
                     {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
                     {
-                        lists.map(
+                        listContext.lists.map(
                             (value) => {
                                 return (<GLUI_ListItem label={value.name} icon={value.icon} id={value.id}></GLUI_ListItem>);
                             })
                     }
 
                     {/* Now we need our addList component*/}
-                    <GLUI_ListItemAdd/>
+                    <GLUI_ListItemAdd dbObject={dbObject} context={{listContext: listContext, dispatchContext: dispatch}}/>
                 </Row>
         </GLUI_ContentContainer>
     );

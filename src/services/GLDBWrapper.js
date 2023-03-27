@@ -90,6 +90,7 @@ export class GLDBWrapper extends Dexie {
 
     // Replaces the whole set of lists. Dangerous.
     set_lists(lists) {
+
          this.list.bulkPut(lists).then(()=>{
                  dbconsole("Bulk items added.");
          },
