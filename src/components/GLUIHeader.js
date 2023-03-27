@@ -10,7 +10,7 @@ const GLUI_Header = ({link, menuClick, menuOver}) => {
 
         <Container className = "GLUI_Header mt-4">
             <Row className = "GLUIHeaderTop">
-                <Col className={"GLUI_HeaderButtonContainer"} xs={4} md={2}>
+                <Col className={"GLUI_HeaderButtonContainer"} xs={3} sm={3} md={3} lg={2}>
                     <Link to="/">
                     <GLUI_ImgButton image={GLCommonImages.GL_APPICON} onClick={()=>{
 
@@ -19,7 +19,7 @@ const GLUI_Header = ({link, menuClick, menuOver}) => {
                     </Link>
                 </Col>
 
-                <Col className={"GLUI_HeaderButtonContainer d-flex"} style={{maxWidth: "60px"}} xs={{span: 4, offset: 6}} md={{ span: 2, offset: 9}}>
+                <Col className={"GLUI_HeaderButtonContainer d-flex"} style={{maxWidth: "80px"}} xs={{span: 6, offset: 6}} sm={{ span: 6, offset: 7}} md={{ span: 8, offset: 7}} lg={{ span: 10, offset: 9}}>
                     <GLUI_ImgButton image={GLCommonImages.GL_MENUICON} onClick={()=>{
 
 
@@ -28,7 +28,10 @@ const GLUI_Header = ({link, menuClick, menuOver}) => {
 
             </Row>
 
-            <hr/>
+            <div className = "mt-4">
+                <hr/>
+            </div>
+
             <Row className = "GLUIHeaderBottom">
                 
                 <Col>
@@ -36,7 +39,11 @@ const GLUI_Header = ({link, menuClick, menuOver}) => {
                 </Col>
 
             </Row>
-            <hr/>
+
+            <div className = "mx-auto" style={{maxWidth: "60%"}}>
+                <hr/>
+            </div>
+            
 
         </Container>
     );
