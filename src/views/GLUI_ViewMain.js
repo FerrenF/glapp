@@ -93,7 +93,7 @@ function GLUI_ListItemAdd(){
 
     //We adjust various properties of this button-to-be depending on the status.
     return (
-        <Col xs={12} md={6} lg={4} xl={3} className={"GLUI_ListItem row mx-auto"}>
+        <Col xs={6} sm={6} md={3} lg={3} xl={3} className={"GLUI_ListItem mx-auto row"}>
             {inpt()}
             <GLUI_ListItemImgBtn icon={_img[addStatus]} onClick={()=>{
                 if(addStatus <2) {
@@ -122,7 +122,7 @@ function GLUI_ListContainer(props){
     //This inline component represents what an item should look like when rendered on our list of lists.
     const GLUI_ListItem = ({label, icon, id}) => {
         return (
-            <Col md={3} xs={6} className={"GLUI_ListItem row"}>
+            <Col xs={6} sm={6} md={3} lg={3} xl={3} className={"GLUI_ListItem mx-auto row"}>
                 <Link to={"list/"+id} style={{width:"100%"}}>
                      <GLUI_ListItemImgBtn icon={icon} onClick={(e)=>{
 
@@ -134,6 +134,27 @@ function GLUI_ListContainer(props){
         );
     }
 
+    //TODO
+    /*function GLUI_ListSidebar(props){
+
+        const [menuItems, setMenuItems] = useState(false);
+    
+    
+        //This inline component represents what an item should look like when rendered on our list of lists.
+        const GLUI_MenuItem = ({label, icon, id}) => {
+            return (
+                <Col md={3} xs={6} className={"GLUI_ListItem row"}>
+                    <Link to={"list/"+id} style={{width:"100%"}}>
+                         <GLUI_ListItemImgBtn icon={icon} onClick={(e)=>{
+    
+                         }}/>
+                    </Link>
+                        {label}
+    
+                </Col>
+            );
+        }
+    }*/
 
 
     //Resources
@@ -162,21 +183,26 @@ function GLUI_ListContainer(props){
     // Render time.
     return(
         <GLUI_ContentContainer>
-                <Row className = "GLUI_ListContainer mx-auto">
-                    {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
-                    {
-                        lists.map(
-                            (value) => {
-                                return (<GLUI_ListItem label={value.name} icon={value.icon} id={value.id}></GLUI_ListItem>);
-                            })
-                    }
+                <Row className = "GLUI_ListContainer d-flex justify-content-center mx-auto">
+                    
+                    {/* RB: Idea to keep this list item first and append new lists immediately after it (or after pinned items) */}
+                    {/* Add Item button could become a fixed icon at the bottom right of the screen once the screen begins to hide the original Add Item icon*/}
+                    <GLUI_ListItemAdd/>
+                        {/*  Maps each value in our list of lists to it's own component, and passes it what it needs to function.*/}
+                        {
+                            lists.map(
+                                (value) => {
+                                    return (<GLUI_ListItem label={value.name} icon={value.icon} id={value.id}></GLUI_ListItem>);
+                                })
+                        }
 
                     {/* Now we need our addList component*/}
-                    <GLUI_ListItemAdd/>
+                    
                 </Row>
         </GLUI_ContentContainer>
     );
 
     //
 }
+
 

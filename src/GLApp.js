@@ -34,14 +34,22 @@ function GLUIAppHeader() {
     return (<GLUI_Header link={"farts"} menuClick={()=>{}} menuOver={()=>{}}></GLUI_Header>);
 }
 
+function handleRightClick(e){
+
+    e.preventDefault();
+}
+
+
 export default function GLApp(props) {
 
     // Todo: server connectivity
     // const [isConnected, setIsConnected] = useState(socket.connected);
     // const [lastMessage, setLastMessage] = useState(null);
 
+    (".GLAppMain")
+
     return (
-            <div className='GLAppMain'>
+            <div className='GLAppMain' onContextMenu={handleRightClick}>
                 <GLUI_MainContainer>
                     <GLUIAppHeader/>
                     <Outlet></Outlet>

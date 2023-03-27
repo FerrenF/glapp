@@ -28,6 +28,11 @@
 #root{
     background-color: var(--color-primary-dark);
 }
+
+body{
+    background-color:var(--color-primary-dark);
+}
+
 .GLAppMain{
     background-color: var(--color-primary-dark);
     color: var(--text-color-dark);
