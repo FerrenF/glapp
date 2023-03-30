@@ -59,6 +59,10 @@ html {
 .GLUI_MainContainer {
     height:100vh;
 }
+
+
+
+
 .ItemListContainer{
     background-color: var(--color-primary-light);
     border-radius:10px;
@@ -77,12 +81,24 @@ html {
 .ItemListContainer .row div img{
     display: flex;
 }
-.ItemListContainer .row div input{
-   scale:2.0;
-}
-.GLUI_RootAddBtn {
-    height: 3em;
+
+.GLUI_ItemSubmitBtn{
+    scale:2;
 }
 .GLUI_ItemAddBtn {
     height: 1.5em;
+}
+.GLUIForm input{
+
+}
+.GLUIAddFolderContainer{
+    height:3em;
+    background-color: var(--color-secondary);
+}
+
+.GLUI_RootAddBtn, .GLUI_RootCancelBtn  {
+    height: 3em;
+}
+.GLUI_RootCancelBtn {
+    transform: rotate(45.0deg);
 }

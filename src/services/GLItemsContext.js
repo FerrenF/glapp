@@ -9,17 +9,26 @@ import {GLDbg} from "./util"
 const dbObject = new GLDBWrapper();
 
 const itemsReducer = (state, action)=> {
-
-    let newState = state;
-    switch (action.type) {
+        switch (action.type) {
         case 'set-list':{
-            newState.listHead = action.list;
-            return newState;
+            return {...state, listHead: action.list, listHeadPopulated: true};
         }
         case 'set-items': {
+            return {...state, listItems: action.items, listItemsPopulated: true};
+        }
 
-            newState.listItems = action.list.items
-            return newState;
+        case 'add-item': {
+            return {...state, listItems: [...state.listItems, {
+                name: action.name,
+                id: action.id,
+                list_id: action.list_id,
+                order: action.order,
+                parent: action.parent,
+                state: {
+
+                }
+            }]
+            };
         }
 
         case 'set': {
